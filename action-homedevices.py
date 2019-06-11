@@ -56,7 +56,7 @@ def subscribe_intent_callback(hermes, intent_message):
                 result_sentence = "{0} Uhr {1} .".format(hours, minutes)
             first_part = ["Gerade ist es", "Es ist jetzt", "Es ist", "Die aktuelle Zeit ist"]
             result_sentence = random.choice(first_part) + " " + result_sentence
-        else if topic == 'Datum':
+        elif topic == 'Datum':
             result_sentence = "Heute ist {0}, der {1}.{2}.{3} .".format(weekday_list[weekday - 1], day, month, year)
         else:
             result_sentence = "Diese Funktion ist noch nicht unterstützt"
