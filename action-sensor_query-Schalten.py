@@ -2,6 +2,8 @@
 
 from hermes_python.hermes import Hermes, MqttOptions
 import toml
+import datetime
+import random
 
 USERNAME_INTENTS = "hgruber"
 MQTT_BROKER_ADDRESS = "localhost:1883"
@@ -33,6 +35,20 @@ def subscribe_intent_callback(hermes, intent_message):
 
     elif intentname == user_intent("calendar_query"):
         result_sentence = "Im Familienkalender finde ich momentan gar nichts"
+        current_session_id = intent_message.session_id
+        hermes.publish_end_session(current_session_id, result_sentence)
+
+    elif intentname == user_intent("time_query"):
+        hours = datetime.datetime.now().hour
+        minutes = datetime.datetime.now().minute
+        if minutes == 0:
+            minutes = ""
+        if hours == 1:
+            result_sentence = "ein Uhr {0} .".format(minutes)
+        else:
+            result_sentence = "{0} Uhr {1} .".format(hours, minutes)
+        first_part = ["Gerade ist es", "Es ist jetzt", "Es ist", "Die aktuelle Zeit ist"]
+        result_sentence = random.choice(first_part) + " " + result_sentence
         current_session_id = intent_message.session_id
         hermes.publish_end_session(current_session_id, result_sentence)
 
