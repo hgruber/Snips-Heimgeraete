@@ -1,0 +1,6 @@
+# Bindings for the hermes protocol 
+hermes-python>=0.7
+toml>=0.10.0
+paho.mqtt
+setuptools>=18.0'
+python-matrixio-hal
