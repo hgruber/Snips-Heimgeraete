@@ -38,27 +38,28 @@ def subscribe_intent_callback(hermes, intent_message):
         current_session_id = intent_message.session_id
         hermes.publish_end_session(current_session_id, result_sentence)
 
-    elif intentname == user_intent("date_query"):
+    elif intentname == user_intent("time_query"):
+        topic = intent_message.slots.topic.first().value
+        hours = datetime.datetime.now().hour
+        minutes = datetime.datetime.now().minute
         year = datetime.datetime.now().year
         month = datetime.datetime.now().month
         day = datetime.datetime.now().day
         weekday = datetime.datetime.now().isoweekday()
         weekday_list = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag', 'Sonntag']
-        result_sentence = "Heute ist {0}, der {1}.{2}.{3} .".format(weekday_list[weekday - 1], day, month, year)
-        current_session_id = intent_message.session_id
-        hermes.publish_end_session(current_session_id, result_sentence)
-
-    elif intentname == user_intent("time_query"):
-        hours = datetime.datetime.now().hour
-        minutes = datetime.datetime.now().minute
-        if minutes == 0:
-            minutes = ""
-        if hours == 1:
-            result_sentence = "ein Uhr {0} .".format(minutes)
+        if topic == 'Zeit':
+            if minutes == 0:
+                minutes = ""
+            if hours == 1:
+                result_sentence = "ein Uhr {0} .".format(minutes)
+            else:
+                result_sentence = "{0} Uhr {1} .".format(hours, minutes)
+            first_part = ["Gerade ist es", "Es ist jetzt", "Es ist", "Die aktuelle Zeit ist"]
+            result_sentence = random.choice(first_part) + " " + result_sentence
+        else if topic == 'Datum':
+            result_sentence = "Heute ist {0}, der {1}.{2}.{3} .".format(weekday_list[weekday - 1], day, month, year)
         else:
-            result_sentence = "{0} Uhr {1} .".format(hours, minutes)
-        first_part = ["Gerade ist es", "Es ist jetzt", "Es ist", "Die aktuelle Zeit ist"]
-        result_sentence = random.choice(first_part) + " " + result_sentence
+            result_sentence = "Diese Funktion ist noch nicht unterstützt"
         current_session_id = intent_message.session_id
         hermes.publish_end_session(current_session_id, result_sentence)
 
