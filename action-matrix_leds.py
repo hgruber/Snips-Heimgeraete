@@ -13,7 +13,6 @@ for i in range(0, len(red.leds)):
     blue.leds[i].blue = 20
 
 def on_message(client, userdata, msg):
-    print(msg.topic)
     if msg.topic == 'hermes/asr/startListening':
         red.render()
     elif msg.topic == 'hermes/hotword/toggleOn':
@@ -22,7 +21,6 @@ def on_message(client, userdata, msg):
         blue.render()
 
 def on_connect(client, userdata, flags, rc):
-    print('subscribing ....')
     client.subscribe('hermes/hotword/toggleOn')
     client.subscribe('hermes/asr/startListening')
     client.subscribe('hermes/tts/say')
