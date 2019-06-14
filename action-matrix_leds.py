@@ -9,8 +9,8 @@ red = everloop.Image()
 blue = everloop.Image()
 black = everloop.Image()
 for i in range(0, len(red.leds)):
-    red.leds[i].red = 20
-    blue.leds[i].blue = 20
+    red.leds[i].red = 10
+    blue.leds[i].blue = 10
 
 def on_message(client, userdata, msg):
     if msg.topic == 'hermes/asr/startListening':
