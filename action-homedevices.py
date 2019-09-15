@@ -1,13 +1,24 @@
 #!/usr/bin/env python3
 
+import configparser
 from hermes_python.hermes import Hermes, MqttOptions
 from zabbix_api import ZabbixAPI
-import toml, json, re, datetime, random
+import io, toml, json, re, datetime, random
 
 USERNAME_INTENTS = "hgruber"
 MQTT_BROKER_ADDRESS = "localhost:1883"
 MQTT_USERNAME = None
 MQTT_PASSWORD = None
+
+def read_configuration_file(configuration_file):
+    try:
+        cp = configparser.ConfigParser()
+        with io.open(configuration_file, encoding="utf-8") as f:
+            cp.read_file(f)
+        return {section: {option_name: option for option_name, option in cp.items(section)}
+                for section in cp.sections()}
+    except (IOError, configparser.Error):
+        return dict()
 
 def user_intent(intentname):
     return USERNAME_INTENTS + ":" + intentname
@@ -147,7 +158,8 @@ if __name__ == "__main__":
         MQTT_PASSWORD = snips_config['snips-common']['mqtt_password']
 
     config = read_configuration_file("config.ini")
-    zabbix = config['secret']['zabbix_api']
+    print(config)
+    zabbix = config['secret']
     zapi = ZabbixAPI(server=zabbix['url'])
     zapi.login(zabbix['user'], zabbix['passwd'])
     sensors = zabbix_items()
