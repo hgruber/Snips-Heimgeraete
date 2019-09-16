@@ -3,7 +3,7 @@
 import configparser
 from hermes_python.hermes import Hermes, MqttOptions
 from zabbix_api import ZabbixAPI
-import io, toml, json, re, datetime, random, mqtt
+import io, toml, json, re, datetime, random, paho.mqtt
 
 USERNAME_INTENTS = "hgruber"
 MQTT_BROKER_ADDRESS = "localhost:1883"
